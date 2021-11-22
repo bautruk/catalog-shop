@@ -24,4 +24,24 @@ class CourseServiceTest {
     //assert
     assertEquals(BigDecimal.valueOf(60L), totalCost);
   }
+
+  @Test
+  void getTotalCost_withTwoValue() {
+    //arrange
+    var courseNames = List.of("MATH", "PHYSICS");
+    //act
+    var totalCost = courseService.getTotalCost(courseNames);
+    //assert
+    assertEquals(BigDecimal.valueOf(85L), totalCost);
+  }
+
+  @Test
+  void getTotalCost_withFourValue() {
+    //arrange
+    var courseNames = List.of("MATH", "MATH", "PHYSICS", "MATH");
+    //act
+    var totalCost = courseService.getTotalCost(courseNames);
+    //assert
+    assertEquals(BigDecimal.valueOf(205L), totalCost);
+  }
 }
