@@ -31,7 +31,6 @@ public class PromotionService {
     }
 
     List<Promotion> promotions = promotionRepository.findCurrentPromotions();
-    long totalNumberOfCourses = typeNumberOfCoursesMap.values().stream().reduce(0L, Long::sum);
 
     for (Promotion promotion : promotions) {
       CourseType courseType = promotion.getCourseType();
@@ -42,12 +41,10 @@ public class PromotionService {
 
       int needToBuy = promotion.getNeedToBuy();
       long numberOfCourses = typeNumberOfCoursesMap.get(courseType);
-      long countOfPossibleApplies = totalNumberOfCourses / (needToBuy + 1);
-      countOfPossibleApplies = Math.min(countOfPossibleApplies, numberOfCourses);
+      long countOfPossibleApplies = numberOfCourses / (needToBuy + 1);
 
       if (numberOfCourses != 0L && countOfPossibleApplies >= 1) {
         typeNumberOfCoursesMap.put(courseType, numberOfCourses - countOfPossibleApplies);
-        totalNumberOfCourses -= (needToBuy + 1) * countOfPossibleApplies;
       }
     }
     return typeNumberOfCoursesMap;

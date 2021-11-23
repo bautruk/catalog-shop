@@ -50,10 +50,10 @@ class CourseServiceTest {
     return Stream.of(
         Arguments.of(null, BigDecimal.ZERO),
         Arguments.of(List.of("MATH"), BigDecimal.valueOf(60L)),
-        Arguments.of(List.of("MATH", "PHYSICS"), BigDecimal.valueOf(25L)),
-        Arguments.of(List.of("MATH", "MATH", "PHYSICS", "MATH"), BigDecimal.valueOf(85L)),
+        Arguments.of(List.of("MATH", "PHYSICS"), BigDecimal.valueOf(85L)),
+        Arguments.of(List.of("MATH", "MATH", "PHYSICS", "MATH"), BigDecimal.valueOf(145L)),
         Arguments.of(List.of("MATH", "MATH", "MATH", "MATH"), BigDecimal.valueOf(120L)),
-        Arguments.of(List.of("MATH", "PHYSICS", "MATH", "PHYSICS"), BigDecimal.valueOf(50L)),
+        Arguments.of(List.of("MATH", "PHYSICS", "MATH", "PHYSICS"), BigDecimal.valueOf(110L)),
         Arguments.of(List.of("MATH", "MATH", "MATH"), BigDecimal.valueOf(120L)),
         Arguments.of(List.of("PHYSICS", "PHYSICS", "PHYSICS"), BigDecimal.valueOf(75L))
     );
