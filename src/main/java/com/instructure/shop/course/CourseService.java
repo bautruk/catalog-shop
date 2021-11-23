@@ -25,7 +25,7 @@ public class CourseService {
    * Count total cost of courses
    *
    * @param courseNames list of course name
-   * @return total cast with promotions
+   * @return total cost with promotions
    */
   public BigDecimal getTotalCost(List<String> courseNames) {
     if (CollectionUtils.isEmpty(courseNames)) {
