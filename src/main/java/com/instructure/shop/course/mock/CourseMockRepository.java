@@ -6,7 +6,6 @@ import com.instructure.shop.course.enums.CourseType;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

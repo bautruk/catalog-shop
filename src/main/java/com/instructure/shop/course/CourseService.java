@@ -2,6 +2,7 @@ package com.instructure.shop.course;
 
 import com.instructure.shop.course.entity.Course;
 import com.instructure.shop.course.enums.CourseType;
+import com.instructure.shop.promotion.PromotionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -18,6 +19,14 @@ public class CourseService {
 
   private final CourseRepository courseRepository;
 
+  private final PromotionService promotionService;
+
+  /**
+   * Count total cost of courses
+   *
+   * @param courseNames list of course name
+   * @return total cast with promotions
+   */
   public BigDecimal getTotalCost(List<String> courseNames) {
     if (CollectionUtils.isEmpty(courseNames)) {
       return BigDecimal.ZERO;
@@ -27,9 +36,7 @@ public class CourseService {
 
     Map<CourseType, BigDecimal> courseTypeCostMap = getCostOfCourses(
         typeNumberOfCoursesMap.keySet());
-    return typeNumberOfCoursesMap.entrySet().stream()
-        .map(e -> courseTypeCostMap.get(e.getKey()).multiply(BigDecimal.valueOf(e.getValue())))
-        .reduce(BigDecimal.ZERO, BigDecimal::add);
+    return promotionService.applyPromotions(typeNumberOfCoursesMap, courseTypeCostMap);
   }
 
   private Map<CourseType, BigDecimal> getCostOfCourses(Set<CourseType> courseTypes) {

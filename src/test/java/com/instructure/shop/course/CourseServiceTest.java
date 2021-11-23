@@ -2,7 +2,6 @@ package com.instructure.shop.course;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.instructure.shop.course.enums.CourseType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,7 +42,7 @@ class CourseServiceTest {
     //act
     var totalCost = courseService.getTotalCost(courseNames);
     //assert
-    assertEquals(BigDecimal.valueOf(85L), totalCost);
+    assertEquals(BigDecimal.valueOf(25L), totalCost);
   }
 
   @Test
@@ -53,7 +52,47 @@ class CourseServiceTest {
     //act
     var totalCost = courseService.getTotalCost(courseNames);
     //assert
-    assertEquals(BigDecimal.valueOf(205L), totalCost);
+    assertEquals(BigDecimal.valueOf(85L), totalCost);
+  }
+
+  @Test
+  void getTotalCost_withFourMath() {
+    //arrange
+    var courseNames = List.of("MATH", "MATH", "MATH", "MATH");
+    //act
+    var totalCost = courseService.getTotalCost(courseNames);
+    //assert
+    assertEquals(BigDecimal.valueOf(120L), totalCost);
+  }
+
+  @Test
+  void getTotalCost_withTwoMathAndTwoPhysics() {
+    //arrange
+    var courseNames = List.of("MATH", "PHYSICS", "MATH", "PHYSICS");
+    //act
+    var totalCost = courseService.getTotalCost(courseNames);
+    //assert
+    assertEquals(BigDecimal.valueOf(50L), totalCost);
+  }
+
+  @Test
+  void getTotalCost_withThreeMath() {
+    //arrange
+    var courseNames = List.of("MATH", "MATH", "MATH");
+    //act
+    var totalCost = courseService.getTotalCost(courseNames);
+    //assert
+    assertEquals(BigDecimal.valueOf(120L), totalCost);
+  }
+
+  @Test
+  void getTotalCost_withThreePhysics() {
+    //arrange
+    var courseNames = List.of("PHYSICS", "PHYSICS", "PHYSICS");
+    //act
+    var totalCost = courseService.getTotalCost(courseNames);
+    //assert
+    assertEquals(BigDecimal.valueOf(75L), totalCost);
   }
 
   @Test()
