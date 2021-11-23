@@ -4,8 +4,8 @@ import com.instructure.shop.course.entity.Course;
 import com.instructure.shop.course.enums.CourseType;
 import com.instructure.shop.promotion.PromotionService;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.List;

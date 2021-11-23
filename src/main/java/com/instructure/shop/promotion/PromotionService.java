@@ -3,6 +3,8 @@ package com.instructure.shop.promotion;
 import com.instructure.shop.course.enums.CourseType;
 import com.instructure.shop.promotion.entity.Promotion;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -17,6 +19,12 @@ public class PromotionService {
 
   public BigDecimal applyPromotions(Map<CourseType, Long> typeNumberOfCoursesMap,
       Map<CourseType, BigDecimal> courseTypeCostMap) {
+
+    if (MapUtils.isEmpty(typeNumberOfCoursesMap) || MapUtils.isEmpty(courseTypeCostMap))
+    {
+      return BigDecimal.ZERO;
+    }
+
     List<Promotion> promotions = promotionRepository.findCurrentPromotions();
     long totalNumberOfCourses = typeNumberOfCoursesMap.values().stream().reduce(0L, Long::sum);
 
