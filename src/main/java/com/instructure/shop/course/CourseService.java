@@ -4,6 +4,7 @@ import com.instructure.shop.course.entity.Course;
 import com.instructure.shop.course.enums.CourseType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,6 +19,9 @@ public class CourseService {
   private final CourseRepository courseRepository;
 
   public BigDecimal getTotalCost(List<String> courseNames) {
+    if (CollectionUtils.isEmpty(courseNames)) {
+      return BigDecimal.ZERO;
+    }
     Map<CourseType, Long> typeNumberOfCoursesMap = courseNames.stream().map(CourseType::valueOf)
         .collect(Collectors.groupingBy(c -> c, Collectors.counting()));
 
