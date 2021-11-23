@@ -36,7 +36,10 @@ public class CourseService {
 
     Map<CourseType, BigDecimal> courseTypeCostMap = getCostOfCourses(
         typeNumberOfCoursesMap.keySet());
-    return promotionService.applyPromotions(typeNumberOfCoursesMap, courseTypeCostMap);
+    typeNumberOfCoursesMap = promotionService.applyPromotions(typeNumberOfCoursesMap);
+    return typeNumberOfCoursesMap.entrySet().stream()
+        .map(e -> courseTypeCostMap.get(e.getKey()).multiply(BigDecimal.valueOf(e.getValue())))
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 
   private Map<CourseType, BigDecimal> getCostOfCourses(Set<CourseType> courseTypes) {

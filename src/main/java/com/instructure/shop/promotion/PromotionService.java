@@ -17,12 +17,17 @@ public class PromotionService {
 
   private final PromotionRepository promotionRepository;
 
-  public BigDecimal applyPromotions(Map<CourseType, Long> typeNumberOfCoursesMap,
-      Map<CourseType, BigDecimal> courseTypeCostMap) {
+  /**
+   * Applying promotions to courses. Exclude free courses.
+   *
+   * @param typeNumberOfCoursesMap Map of number of courses by type
+   * @return total cast with promotions
+   */
+  public Map<CourseType, Long> applyPromotions(Map<CourseType, Long> typeNumberOfCoursesMap) {
 
-    if (MapUtils.isEmpty(typeNumberOfCoursesMap) || MapUtils.isEmpty(courseTypeCostMap))
+    if (MapUtils.isEmpty(typeNumberOfCoursesMap))
     {
-      return BigDecimal.ZERO;
+      return Map.of();
     }
 
     List<Promotion> promotions = promotionRepository.findCurrentPromotions();
@@ -45,8 +50,6 @@ public class PromotionService {
         totalNumberOfCourses -= (needToBuy + 1) * countOfPossibleApplies;
       }
     }
-    return typeNumberOfCoursesMap.entrySet().stream()
-        .map(e -> courseTypeCostMap.get(e.getKey()).multiply(BigDecimal.valueOf(e.getValue())))
-        .reduce(BigDecimal.ZERO, BigDecimal::add);
+    return typeNumberOfCoursesMap;
   }
 }
