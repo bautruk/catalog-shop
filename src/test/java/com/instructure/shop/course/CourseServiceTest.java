@@ -2,13 +2,16 @@ package com.instructure.shop.course;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.instructure.shop.course.enums.CourseType;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Stream;
 
 @SpringBootTest
 class CourseServiceTest {
@@ -26,41 +29,33 @@ class CourseServiceTest {
     assertEquals(BigDecimal.valueOf(0), totalCost);
   }
 
-  @Test
-  void getTotalCost_withOneValue() {
-    //arrange
-    var courseNames = List.of("MATH");
-    //act
-    var totalCost = courseService.getTotalCost(courseNames);
-    //assert
-    assertEquals(BigDecimal.valueOf(60L), totalCost);
-  }
-
-  @Test
-  void getTotalCost_withTwoValue() {
-    //arrange
-    var courseNames = List.of("MATH", "PHYSICS");
-    //act
-    var totalCost = courseService.getTotalCost(courseNames);
-    //assert
-    assertEquals(BigDecimal.valueOf(85L), totalCost);
-  }
-
-  @Test
-  void getTotalCost_withFourValue() {
-    //arrange
-    var courseNames = List.of("MATH", "MATH", "PHYSICS", "MATH");
-    //act
-    var totalCost = courseService.getTotalCost(courseNames);
-    //assert
-    assertEquals(BigDecimal.valueOf(205L), totalCost);
-  }
-
   @Test()
   void getTotalCost_withIncorrectValue() {
     //arrange
     var courseNames = List.of("MATH", "MATH", "PHYSICS", "MATH", "BIOLOGY");
     //assert
     assertThrows(IllegalArgumentException.class, () -> courseService.getTotalCost(courseNames));
+  }
+
+  @ParameterizedTest
+  @MethodSource("provideCourseNameAndCost")
+  void getTotalCost(List<String> courseNames, BigDecimal expectedCost) {
+    //act
+    var totalCost = courseService.getTotalCost(courseNames);
+    //assert
+    assertEquals(expectedCost, totalCost);
+  }
+
+  public static Stream<Arguments> provideCourseNameAndCost() {
+    return Stream.of(
+        Arguments.of(null, BigDecimal.ZERO),
+        Arguments.of(List.of("MATH"), BigDecimal.valueOf(60L)),
+        Arguments.of(List.of("MATH", "PHYSICS"), BigDecimal.valueOf(25L)),
+        Arguments.of(List.of("MATH", "MATH", "PHYSICS", "MATH"), BigDecimal.valueOf(85L)),
+        Arguments.of(List.of("MATH", "MATH", "MATH", "MATH"), BigDecimal.valueOf(120L)),
+        Arguments.of(List.of("MATH", "PHYSICS", "MATH", "PHYSICS"), BigDecimal.valueOf(50L)),
+        Arguments.of(List.of("MATH", "MATH", "MATH"), BigDecimal.valueOf(120L)),
+        Arguments.of(List.of("PHYSICS", "PHYSICS", "PHYSICS"), BigDecimal.valueOf(75L))
+    );
   }
 }

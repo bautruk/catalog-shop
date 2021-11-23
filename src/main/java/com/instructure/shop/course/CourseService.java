@@ -2,9 +2,10 @@ package com.instructure.shop.course;
 
 import com.instructure.shop.course.entity.Course;
 import com.instructure.shop.course.enums.CourseType;
+import com.instructure.shop.promotion.PromotionService;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,6 +19,14 @@ public class CourseService {
 
   private final CourseRepository courseRepository;
 
+  private final PromotionService promotionService;
+
+  /**
+   * Count total cost of courses
+   *
+   * @param courseNames list of course name
+   * @return total cost with promotions
+   */
   public BigDecimal getTotalCost(List<String> courseNames) {
     if (CollectionUtils.isEmpty(courseNames)) {
       return BigDecimal.ZERO;
@@ -25,8 +34,11 @@ public class CourseService {
     Map<CourseType, Long> typeNumberOfCoursesMap = courseNames.stream().map(CourseType::valueOf)
         .collect(Collectors.groupingBy(c -> c, Collectors.counting()));
 
-    Map<CourseType, BigDecimal> courseTypeCostMap = getCostOfCourses(
-        typeNumberOfCoursesMap.keySet());
+    Map<CourseType, BigDecimal> courseTypeCostMap =
+        getCostOfCourses(typeNumberOfCoursesMap.keySet());
+
+    typeNumberOfCoursesMap = promotionService.excludePromotionCourses(typeNumberOfCoursesMap);
+
     return typeNumberOfCoursesMap.entrySet().stream()
         .map(e -> courseTypeCostMap.get(e.getKey()).multiply(BigDecimal.valueOf(e.getValue())))
         .reduce(BigDecimal.ZERO, BigDecimal::add);
