@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -23,7 +24,7 @@ public class PromotionFactory {
       List<Promotion> promotions) {
 
     return Stream.of(promotionStrategies)
-        .map(s -> s.applyPromotion(numberOfCourses, promotions))
+        .map(s -> s.applyPromotion(new HashMap<>(numberOfCourses), promotions))
         .min(Comparator.naturalOrder())
         .orElse(BigDecimal.ZERO);
   }
