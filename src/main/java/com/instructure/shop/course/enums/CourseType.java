@@ -2,5 +2,5 @@ package com.instructure.shop.course.enums;
 
 public enum CourseType
 {
-    MATH, PHYSICS
+    MATH, PHYSICS, CHEMISTRY
 }

@@ -55,7 +55,14 @@ class CourseServiceTest {
         Arguments.of(List.of("MATH", "MATH", "MATH", "MATH"), BigDecimal.valueOf(120L)),
         Arguments.of(List.of("MATH", "PHYSICS", "MATH", "PHYSICS"), BigDecimal.valueOf(110L)),
         Arguments.of(List.of("MATH", "MATH", "MATH"), BigDecimal.valueOf(120L)),
-        Arguments.of(List.of("PHYSICS", "PHYSICS", "PHYSICS"), BigDecimal.valueOf(75L))
+        Arguments.of(List.of("PHYSICS", "PHYSICS", "PHYSICS"), BigDecimal.valueOf(75L)),
+        Arguments.of(List.of("MATH", "CHEMISTRY", "MATH"), BigDecimal.valueOf(80L)),
+        Arguments.of(List.of("CHEMISTRY", "CHEMISTRY"), BigDecimal.valueOf(20L)),
+        Arguments.of(List.of("MATH", "CHEMISTRY", "CHEMISTRY"), BigDecimal.valueOf(80L)),
+        Arguments.of(List.of("PHYSICS", "CHEMISTRY"), BigDecimal.valueOf(45L)),
+        Arguments.of(List.of("MATH", "CHEMISTRY", "MATH", "CHEMISTRY"), BigDecimal.valueOf(80L)),
+        Arguments.of(
+            List.of("PHYSICS", "CHEMISTRY", "PHYSICS", "CHEMISTRY"), BigDecimal.valueOf(70L))
     );
   }
 }

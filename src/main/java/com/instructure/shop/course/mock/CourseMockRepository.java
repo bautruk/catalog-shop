@@ -23,6 +23,8 @@ public class CourseMockRepository implements CourseRepository {
       case MATH -> Course.builder().type(CourseType.MATH).cost(BigDecimal.valueOf(60L)).build();
       case PHYSICS -> Course.builder().type(CourseType.PHYSICS).cost(BigDecimal.valueOf(25L))
           .build();
+      case CHEMISTRY -> Course.builder().type(CourseType.CHEMISTRY).cost(BigDecimal.valueOf(20L))
+          .build();
       default -> throw new IllegalArgumentException();
     };
   }
