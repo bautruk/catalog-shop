@@ -23,7 +23,7 @@ public class PromotionService {
    * @param typeNumberOfCoursesMap Map of number of courses by type
    * @return total cast with promotions
    */
-  public Map<CourseType, Long> applyPromotions(Map<CourseType, Long> typeNumberOfCoursesMap) {
+  public Map<CourseType, Long> excludePromotionCourses(Map<CourseType, Long> typeNumberOfCoursesMap) {
 
     if (MapUtils.isEmpty(typeNumberOfCoursesMap))
     {

@@ -34,9 +34,11 @@ public class CourseService {
     Map<CourseType, Long> typeNumberOfCoursesMap = courseNames.stream().map(CourseType::valueOf)
         .collect(Collectors.groupingBy(c -> c, Collectors.counting()));
 
-    Map<CourseType, BigDecimal> courseTypeCostMap = getCostOfCourses(
-        typeNumberOfCoursesMap.keySet());
-    typeNumberOfCoursesMap = promotionService.applyPromotions(typeNumberOfCoursesMap);
+    Map<CourseType, BigDecimal> courseTypeCostMap =
+        getCostOfCourses(typeNumberOfCoursesMap.keySet());
+
+    typeNumberOfCoursesMap = promotionService.excludePromotionCourses(typeNumberOfCoursesMap);
+
     return typeNumberOfCoursesMap.entrySet().stream()
         .map(e -> courseTypeCostMap.get(e.getKey()).multiply(BigDecimal.valueOf(e.getValue())))
         .reduce(BigDecimal.ZERO, BigDecimal::add);
