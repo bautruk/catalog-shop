@@ -24,7 +24,7 @@ public class PromotionFactory {
       List<Promotion> promotions) {
 
     return Stream.of(promotionStrategies)
-        .map(s -> s.applyPromotion(new HashMap<>(numberOfCourses), promotions))
+        .map(s -> s.applyPromotionAndGetCost(new HashMap<>(numberOfCourses), promotions))
         .min(Comparator.naturalOrder())
         .orElse(BigDecimal.ZERO);
   }

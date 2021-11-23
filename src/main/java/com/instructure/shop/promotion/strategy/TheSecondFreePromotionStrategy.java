@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class TheSecondFreePromotionStrategy implements PromotionStrategy {
 
   @Override
-  public BigDecimal applyPromotion(Map<Course, Long> numberOfCourses,
+  public BigDecimal applyPromotionAndGetCost(Map<Course, Long> numberOfCourses,
       List<Promotion> promotions) {
 
     Map<CourseType, Course> courseTypeCourseMap = numberOfCourses.keySet().stream()

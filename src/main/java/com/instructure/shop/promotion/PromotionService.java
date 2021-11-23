@@ -18,13 +18,12 @@ public class PromotionService {
   private final PromotionRepository promotionRepository;
 
   /**
-   * Applying promotions to courses. Exclude free courses.
+   * Applying promotions to courses. Apply promotions.
    *
    * @param numberOfCourses Map of number of courses
    * @return total cast with promotions
    */
-  public BigDecimal getTotalCostWithPromotions(
-      Map<Course, Long> numberOfCourses) {
+  public BigDecimal getTotalCostWithPromotions(Map<Course, Long> numberOfCourses) {
 
     if (MapUtils.isEmpty(numberOfCourses)) {
       return BigDecimal.ZERO;
