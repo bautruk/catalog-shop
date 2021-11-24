@@ -3,7 +3,6 @@ package com.instructure.shop.order;
 import com.instructure.shop.order.vo.OrderRequestVO;
 import com.instructure.shop.order.vo.OrderResponseVO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +18,8 @@ import javax.validation.Valid;
 @RequestMapping("/order")
 public class OrderController {
 
+  private final OrderService orderService;
+
   /**
    * Get order by id
    *
@@ -26,18 +27,18 @@ public class OrderController {
    * @return the order {@link OrderResponseVO}
    */
   @GetMapping("/{id}")
-  public ResponseEntity getOrder(@PathVariable("id") final UUID id) {
-    return ResponseEntity.ok().build();
+  public OrderResponseVO getOrder(@PathVariable("id") final UUID id) {
+    return orderService.findById(id);
   }
 
   /**
-   *
+   * Creating order with list of courses and the total cost
    *
    * @param request {@link OrderRequestVO}
-   * @return
+   * @return list of course names and total cost {@link OrderResponseVO}
    */
   @PostMapping
-  public ResponseEntity createOrder(@Valid @RequestBody OrderRequestVO request) {
-    return ResponseEntity.ok().build();
+  public OrderResponseVO createOrder(@Valid @RequestBody OrderRequestVO request) {
+    throw new UnsupportedOperationException();
   }
 }

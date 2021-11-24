@@ -1,7 +1,6 @@
 package com.instructure.shop.promotion.strategy;
 
 import com.instructure.shop.course.entity.Course;
-import com.instructure.shop.course.enums.CourseType;
 import com.instructure.shop.promotion.entity.Promotion;
 import com.instructure.shop.promotion.enums.PromotionType;
 import com.instructure.shop.util.CourseCostCalculator;
@@ -13,8 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Component
@@ -24,19 +22,16 @@ public class CheapestPromotionStrategy implements PromotionStrategy {
   public BigDecimal applyPromotionAndGetCost(Map<Course, Long> numberOfCourses,
       List<Promotion> promotions) {
     Map<Course, Long> quantityByCourse = new HashMap<>(numberOfCourses);
-    Map<CourseType, Course> courseTypeCourseMap = quantityByCourse.keySet().stream()
-        .collect(Collectors.toMap(Course::getType, Function.identity()));
+    Set<Course> courses = quantityByCourse.keySet();
 
     List<Promotion> appliedPromotions =
         getAppliedPromotions(promotions, PromotionType.THE_CHEAPEST_COURSE_IS_FREE);
 
     for (Promotion promotion : appliedPromotions) {
-      CourseType courseType = promotion.getCourseType();
-      Course course = courseTypeCourseMap.get(courseType);
-      CourseType linkedCourseType = promotion.getLinkedCourseType();
-      Course linkedCourse = courseTypeCourseMap.get(linkedCourseType);
+      Course course = promotion.getCourse();
+      Course linkedCourse = promotion.getLinkedCourse();
 
-      if (course != null && linkedCourse != null) {
+      if (courses.contains(course) && courses.contains(linkedCourse)) {
         long quantity = quantityByCourse.get(course);
         long linkedQuantity = quantityByCourse.get(linkedCourse);
         long countOfPossibleApplies = Math.min(quantity, linkedQuantity);

@@ -28,14 +28,14 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   defaultValueComputed: CURRENT_TIMESTAMP
-                  name: cour_created
+                  name: or_created
                   remarks: Record created
                   type: datetime
               - column:
                   constraints:
                     nullable: false
                   defaultValueComputed: CURRENT_TIMESTAMP
-                  name: cour_modified
+                  name: or_modified
                   remarks: Record modified
                   type: datetime
   - changeSet:

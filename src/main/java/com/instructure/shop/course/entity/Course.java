@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -37,6 +39,7 @@ public class Course
      * Type of course
      */
     @NotNull
+    @Enumerated( EnumType.STRING )
     @Column( name = "cour_type" )
     private CourseType type;
 
@@ -47,11 +50,17 @@ public class Course
     @Column( name = "cour_cost" )
     private BigDecimal cost;
 
+    /**
+     * Record created
+     */
     @EqualsAndHashCode.Exclude
     @Column( name = "cour_created", updatable = false )
     @CreatedDate
     private LocalDateTime created;
 
+    /**
+     * Record modified
+     */
     @EqualsAndHashCode.Exclude
     @Column( name = "cour_modified" )
     @LastModifiedDate

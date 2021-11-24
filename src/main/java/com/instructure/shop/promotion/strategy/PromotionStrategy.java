@@ -20,7 +20,7 @@ public interface PromotionStrategy {
 
     return promotions
         .stream()
-        .filter(promotion -> promotionType == promotion.getPromotionType())
+        .filter(promotion -> promotionType == promotion.getType())
         .collect(Collectors.toList());
   }
 }
