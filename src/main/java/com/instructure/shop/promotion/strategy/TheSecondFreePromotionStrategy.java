@@ -4,6 +4,7 @@ import com.instructure.shop.course.entity.Course;
 import com.instructure.shop.course.enums.CourseType;
 import com.instructure.shop.promotion.entity.Promotion;
 import com.instructure.shop.promotion.enums.PromotionType;
+import com.instructure.shop.util.CourseCostCalculator;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -43,6 +44,6 @@ public class TheSecondFreePromotionStrategy implements PromotionStrategy {
         quantityByCourse.put(course, quantity - countOfPossibleApplies);
       }
     }
-    return getCost(quantityByCourse);
+    return CourseCostCalculator.getCost(quantityByCourse);
   }
 }

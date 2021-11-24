@@ -36,7 +36,7 @@ public class CourseService {
     Map<CourseType, Long> quantityByCourseType = courseNames.stream().map(CourseType::valueOf)
         .collect(Collectors.groupingBy(c -> c, Collectors.counting()));
 
-    List<Course> courses = getCostOfCourses(quantityByCourseType.keySet());
+    List<Course> courses = courseRepository.findByTypeIn(quantityByCourseType.keySet());
 
     Map<CourseType, Course> courseByCourseType = courses.stream()
         .collect(Collectors.toMap(Course::getType, Function.identity()));
@@ -46,9 +46,5 @@ public class CourseService {
         .collect(Collectors.toMap(k -> courseByCourseType.get(k.getKey()), Entry::getValue));
 
     return promotionService.getTotalCostWithPromotions(quantityByCourse);
-  }
-
-  private List<Course> getCostOfCourses(Set<CourseType> courseTypes) {
-    return courseRepository.findByTypeIn(courseTypes);
   }
 }
