@@ -1,5 +1,3 @@
-[[_TOC_]]
-
 # Catalog-Shop System
 
 Application provide functionality for promoting courses
