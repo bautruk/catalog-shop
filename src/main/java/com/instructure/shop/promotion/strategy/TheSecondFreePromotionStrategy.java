@@ -36,11 +36,11 @@ public class TheSecondFreePromotionStrategy implements PromotionStrategy {
       }
 
       int needToBuy = promotion.getNeedToBuy();
-      long number = quantityByCourse.get(course);
-      long countOfPossibleApplies = number / (needToBuy + 1);
+      long quantity = quantityByCourse.get(course);
+      long countOfPossibleApplies = quantity / (needToBuy + 1);
 
-      if (number != 0L && countOfPossibleApplies >= 1) {
-        quantityByCourse.put(course, number - countOfPossibleApplies);
+      if (quantity != 0L && countOfPossibleApplies >= 1) {
+        quantityByCourse.put(course, quantity - countOfPossibleApplies);
       }
     }
     return getCost(quantityByCourse);

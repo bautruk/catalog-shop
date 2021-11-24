@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 @Component
@@ -33,6 +33,6 @@ public class PromotionAggregator {
     return Stream.of(promotionStrategies)
         .map(s -> s.applyPromotionAndGetCost(quantityByCourse, promotions))
         .min(Comparator.naturalOrder())
-        .orElse(BigDecimal.ZERO);
+        .orElseThrow(NoSuchElementException::new);
   }
 }

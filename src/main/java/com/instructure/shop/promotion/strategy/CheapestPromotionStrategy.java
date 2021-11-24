@@ -39,14 +39,14 @@ public class CheapestPromotionStrategy implements PromotionStrategy {
         continue;
       }
 
-      long number = quantityByCourse.get(course);
-      long linkedNumber = quantityByCourse.get(linkedCourse);
-      long countOfPossibleApplies = Math.min(number, linkedNumber);
+      long quantity = quantityByCourse.get(course);
+      long linkedQuantity = quantityByCourse.get(linkedCourse);
+      long countOfPossibleApplies = Math.min(quantity, linkedQuantity);
       Course cheapestCourse = Stream.of(course, linkedCourse)
           .min(Comparator.comparing(Course::getCost))
           .orElseThrow(NoSuchElementException::new);
 
-      if (number != 0L && countOfPossibleApplies >= 1) {
+      if (quantity != 0L && countOfPossibleApplies >= 1) {
         quantityByCourse.put(cheapestCourse,
             quantityByCourse.get(cheapestCourse) - countOfPossibleApplies);
       }
