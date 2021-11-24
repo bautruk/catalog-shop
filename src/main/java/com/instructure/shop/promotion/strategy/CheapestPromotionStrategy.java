@@ -4,6 +4,7 @@ import com.instructure.shop.course.entity.Course;
 import com.instructure.shop.course.enums.CourseType;
 import com.instructure.shop.promotion.entity.Promotion;
 import com.instructure.shop.promotion.enums.PromotionType;
+import com.instructure.shop.util.CourseCostCalculator;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -35,22 +36,20 @@ public class CheapestPromotionStrategy implements PromotionStrategy {
       CourseType linkedCourseType = promotion.getLinkedCourseType();
       Course linkedCourse = courseTypeCourseMap.get(linkedCourseType);
 
-      if (course == null || linkedCourse == null) {
-        continue;
-      }
+      if (course != null && linkedCourse != null) {
+        long quantity = quantityByCourse.get(course);
+        long linkedQuantity = quantityByCourse.get(linkedCourse);
+        long countOfPossibleApplies = Math.min(quantity, linkedQuantity);
+        Course cheapestCourse = Stream.of(course, linkedCourse)
+            .min(Comparator.comparing(Course::getCost))
+            .orElseThrow(NoSuchElementException::new);
 
-      long quantity = quantityByCourse.get(course);
-      long linkedQuantity = quantityByCourse.get(linkedCourse);
-      long countOfPossibleApplies = Math.min(quantity, linkedQuantity);
-      Course cheapestCourse = Stream.of(course, linkedCourse)
-          .min(Comparator.comparing(Course::getCost))
-          .orElseThrow(NoSuchElementException::new);
-
-      if (quantity != 0L && countOfPossibleApplies >= 1) {
-        quantityByCourse.put(cheapestCourse,
-            quantityByCourse.get(cheapestCourse) - countOfPossibleApplies);
+        if (quantity != 0L && countOfPossibleApplies >= 1) {
+          quantityByCourse.put(cheapestCourse,
+              quantityByCourse.get(cheapestCourse) - countOfPossibleApplies);
+        }
       }
     }
-    return getCost(quantityByCourse);
+    return CourseCostCalculator.getCost(quantityByCourse);
   }
 }

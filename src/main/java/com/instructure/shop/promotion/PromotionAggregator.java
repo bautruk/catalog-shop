@@ -3,6 +3,7 @@ package com.instructure.shop.promotion;
 import com.instructure.shop.course.entity.Course;
 import com.instructure.shop.promotion.entity.Promotion;
 import com.instructure.shop.promotion.strategy.PromotionStrategy;
+import com.instructure.shop.util.CourseCostCalculator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +18,10 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 public class PromotionAggregator {
 
-  private final PromotionStrategy[] promotionStrategies;
+  private final List<PromotionStrategy> promotionStrategies;
 
   /**
-   * Return the cheapest cost of provided courses with apllied promotions
+   * Return the cheapest cost of provided courses with applied promotions
    *
    * @param quantityByCourse how many courses in the card by course
    * @param promotions list of available promotions
@@ -30,9 +31,9 @@ public class PromotionAggregator {
       Map<Course, Long> quantityByCourse,
       List<Promotion> promotions) {
 
-    return Stream.of(promotionStrategies)
+    return promotionStrategies.stream()
         .map(s -> s.applyPromotionAndGetCost(quantityByCourse, promotions))
         .min(Comparator.naturalOrder())
-        .orElseThrow(NoSuchElementException::new);
+        .orElse(CourseCostCalculator.getCost(quantityByCourse));
   }
 }

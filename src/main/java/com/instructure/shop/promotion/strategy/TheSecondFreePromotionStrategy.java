@@ -4,6 +4,7 @@ import com.instructure.shop.course.entity.Course;
 import com.instructure.shop.course.enums.CourseType;
 import com.instructure.shop.promotion.entity.Promotion;
 import com.instructure.shop.promotion.enums.PromotionType;
+import com.instructure.shop.util.CourseCostCalculator;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -31,18 +32,16 @@ public class TheSecondFreePromotionStrategy implements PromotionStrategy {
       CourseType courseType = promotion.getCourseType();
       Course course = courseTypeCourseMap.get(courseType);
 
-      if (course == null) {
-        continue;
-      }
+      if (course != null) {
+        int needToBuy = promotion.getNeedToBuy();
+        long quantity = quantityByCourse.get(course);
+        long countOfPossibleApplies = quantity / (needToBuy + 1);
 
-      int needToBuy = promotion.getNeedToBuy();
-      long quantity = quantityByCourse.get(course);
-      long countOfPossibleApplies = quantity / (needToBuy + 1);
-
-      if (quantity != 0L && countOfPossibleApplies >= 1) {
-        quantityByCourse.put(course, quantity - countOfPossibleApplies);
+        if (quantity != 0L && countOfPossibleApplies >= 1) {
+          quantityByCourse.put(course, quantity - countOfPossibleApplies);
+        }
       }
     }
-    return getCost(quantityByCourse);
+    return CourseCostCalculator.getCost(quantityByCourse);
   }
 }

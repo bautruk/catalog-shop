@@ -23,10 +23,4 @@ public interface PromotionStrategy {
         .filter(promotion -> promotionType == promotion.getPromotionType())
         .collect(Collectors.toList());
   }
-
-  default BigDecimal getCost(Map<Course, Long> numberOfCourses) {
-    return numberOfCourses.entrySet().stream()
-        .map(e -> e.getKey().getCost().multiply(BigDecimal.valueOf(e.getValue())))
-        .reduce(BigDecimal.ZERO, BigDecimal::add);
-  }
 }
