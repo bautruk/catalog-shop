@@ -19,9 +19,9 @@ import java.util.stream.Stream;
 public class CheapestPromotionStrategy implements PromotionStrategy {
 
   @Override
-  public BigDecimal applyPromotionAndGetCost(Map<Course, Long> numberOfCourses,
+  public BigDecimal applyPromotionAndGetCost(Map<Course, Integer> numberOfCourses,
       List<Promotion> promotions) {
-    Map<Course, Long> quantityByCourse = new HashMap<>(numberOfCourses);
+    Map<Course, Integer> quantityByCourse = new HashMap<>(numberOfCourses);
     Set<Course> courses = quantityByCourse.keySet();
 
     List<Promotion> appliedPromotions =
@@ -32,9 +32,9 @@ public class CheapestPromotionStrategy implements PromotionStrategy {
       Course linkedCourse = promotion.getLinkedCourse();
 
       if (courses.contains(course) && courses.contains(linkedCourse)) {
-        long quantity = quantityByCourse.get(course);
-        long linkedQuantity = quantityByCourse.get(linkedCourse);
-        long countOfPossibleApplies = Math.min(quantity, linkedQuantity);
+        int quantity = quantityByCourse.get(course);
+        int linkedQuantity = quantityByCourse.get(linkedCourse);
+        int countOfPossibleApplies = Math.min(quantity, linkedQuantity);
         Course cheapestCourse = Stream.of(course, linkedCourse)
             .min(Comparator.comparing(Course::getCost))
             .orElseThrow(NoSuchElementException::new);

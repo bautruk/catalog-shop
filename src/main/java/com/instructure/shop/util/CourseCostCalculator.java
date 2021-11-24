@@ -10,7 +10,7 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CourseCostCalculator {
 
-  public static BigDecimal getCost(Map<Course, Long> numberOfCourses) {
+  public static BigDecimal getCost(Map<Course, Integer> numberOfCourses) {
     return numberOfCourses.entrySet().stream()
         .map(e -> e.getKey().getCost().multiply(BigDecimal.valueOf(e.getValue())))
         .reduce(BigDecimal.ZERO, BigDecimal::add);

@@ -28,7 +28,7 @@ public class PromotionAggregator {
    * @return the cheapest cost for provided courses
    */
   public BigDecimal getTheLowestCost(
-      Map<Course, Long> quantityByCourse,
+      Map<Course, Integer> quantityByCourse,
       List<Promotion> promotions) {
 
     return promotionStrategies.stream()

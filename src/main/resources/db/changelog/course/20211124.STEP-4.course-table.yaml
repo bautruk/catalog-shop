@@ -21,6 +21,7 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
+                    unique: true
                   name: cour_type
                   remarks: Type of course
                   type: VARCHAR(50)

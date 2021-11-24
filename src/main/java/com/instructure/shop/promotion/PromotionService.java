@@ -5,6 +5,7 @@ import com.instructure.shop.promotion.entity.Promotion;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,13 +24,14 @@ public class PromotionService {
    * @param quantityByCourse Map of quantity by course
    * @return total cost with promotions
    */
-  public BigDecimal getTotalCostWithPromotions(Map<Course, Long> quantityByCourse) {
+  @Transactional(readOnly = true)
+  public BigDecimal getTotalCostWithPromotions(Map<Course, Integer> quantityByCourse) {
 
     if (MapUtils.isEmpty(quantityByCourse)) {
       return BigDecimal.ZERO;
     }
 
-    List<Promotion> promotions = promotionRepository.findCurrentPromotions();
+    List<Promotion> promotions = promotionRepository.findAll();
 
     return promotionAggregator.getTheLowestCost(quantityByCourse, promotions);
   }

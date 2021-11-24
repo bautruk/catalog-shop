@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public interface PromotionStrategy {
 
-  BigDecimal applyPromotionAndGetCost(Map<Course, Long> numberOfCourses,
+  BigDecimal applyPromotionAndGetCost(Map<Course, Integer> numberOfCourses,
       List<Promotion> promotions);
 
   default List<Promotion> getAppliedPromotions(

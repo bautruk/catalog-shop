@@ -28,7 +28,8 @@ public class OrdersController {
    * @return the order {@link OrdersResponseVO}
    */
   @GetMapping("/{id}")
-  public @ResponseBody OrdersResponseVO getOrder(@PathVariable("id") final UUID id) {
+  public @ResponseBody
+  OrdersResponseVO getOrder(@PathVariable("id") final UUID id) {
     return ordersService.findById(id);
   }
 
@@ -39,7 +40,8 @@ public class OrdersController {
    * @return list of course names and total cost {@link OrdersResponseVO}
    */
   @PostMapping
-  public @ResponseBody OrdersResponseVO createOrder(@Valid @RequestBody OrdersRequestVO request) {
-    throw new UnsupportedOperationException();
+  public @ResponseBody
+  OrdersResponseVO createOrder(@Valid @RequestBody OrdersRequestVO request) {
+    return ordersService.create(request);
   }
 }

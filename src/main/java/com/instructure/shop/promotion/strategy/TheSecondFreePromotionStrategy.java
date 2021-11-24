@@ -16,10 +16,10 @@ import java.util.Set;
 public class TheSecondFreePromotionStrategy implements PromotionStrategy {
 
   @Override
-  public BigDecimal applyPromotionAndGetCost(Map<Course, Long> numberOfCourses,
+  public BigDecimal applyPromotionAndGetCost(Map<Course, Integer> numberOfCourses,
       List<Promotion> promotions) {
 
-    Map<Course, Long> quantityByCourse = new HashMap<>(numberOfCourses);
+    Map<Course, Integer> quantityByCourse = new HashMap<>(numberOfCourses);
     Set<Course> courses = quantityByCourse.keySet();
 
     List<Promotion> appliedPromotions =
@@ -30,8 +30,8 @@ public class TheSecondFreePromotionStrategy implements PromotionStrategy {
 
       if (courses.contains(course)) {
         int needToBuy = promotion.getNeedToBuy();
-        long quantity = quantityByCourse.get(course);
-        long countOfPossibleApplies = quantity / (needToBuy + 1);
+        int quantity = quantityByCourse.get(course);
+        int countOfPossibleApplies = quantity / (needToBuy + 1);
 
         if (quantity != 0L && countOfPossibleApplies >= 1) {
           quantityByCourse.put(course, quantity - countOfPossibleApplies);
