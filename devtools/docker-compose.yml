@@ -1,0 +1,26 @@
+version: '3.8'
+
+networks:
+  shop-network:
+    name: shop-network
+    driver: bridge
+
+volumes:
+  db-data:
+
+services:
+  database:
+    container_name: shop-db
+    image: postgres:13.5
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - shop-network
+    ports:
+      - 5432:5432
+    restart: unless-stopped

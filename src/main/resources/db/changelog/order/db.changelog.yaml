@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - include:
+      file: 20211124.STEP-4.orders-table.yaml
+      relativeToChangelogFile: true

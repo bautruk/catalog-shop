@@ -1,0 +1,111 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: 20211124.STEP-4.create-order-table
+      author: ibautrukevich@exadel.com
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: orders
+      changes:
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                  name: or_id
+                  remarks: Primary Key
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: or_total_cost
+                  remarks: Type of course
+                  type: DECIMAL(19, 4)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  name: or_created
+                  remarks: Record created
+                  type: datetime
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  name: or_modified
+                  remarks: Record modified
+                  type: datetime
+  - changeSet:
+      id: 20211124.STEP-4.create-orders_course-table
+      author: ibautrukevich@exadel.com
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: orders_course
+      changes:
+        - createTable:
+            tableName: orders_course
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: or_id
+                  remarks: Link to order
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: cour_id
+                  remarks: Link to couse
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  name: cour_created
+                  remarks: Record created
+                  type: datetime
+  - changeSet:
+      id: 20211124.STEP-4.add-fk_orders_course_course
+      author: ibautrukevich@exadel.com
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - foreignKeyConstraintExists:
+                foreignKeyName: fk_orders_course_course
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: cour_id
+            baseTableName: orders_course
+            constraintName: fk_orders_course_course
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: cour_id
+            referencedTableName: course
+            validate: true
+  - changeSet:
+      id: 20211124.STEP-4.add-fk_orders_course_order
+      author: ibautrukevich@exadel.com
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - foreignKeyConstraintExists:
+                foreignKeyName: fk_orders_course_order
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: or_id
+            baseTableName: orders_course
+            constraintName: fk_orders_course_order
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: or_id
+            referencedTableName: orders
+            validate: true

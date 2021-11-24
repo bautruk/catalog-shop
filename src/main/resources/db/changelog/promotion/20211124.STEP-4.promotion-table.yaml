@@ -1,0 +1,76 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: 20211124.STEP-4.create-promotion-table
+      author: ibautrukevich@exadel.com
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: promotion
+      changes:
+        - createTable:
+            tableName: promotion
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                  name: pr_id
+                  remarks: Primary Key
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: pr_type
+                  remarks: Type of course
+                  type: VARCHAR(50)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: pr_need_to_buy
+                  remarks: Apllied one free course to N of in the card
+                  type: SMALLINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: cour_id
+                  remarks: Course ID
+                  type: UUID
+              - column:
+                  name: cour_id_ref
+                  remarks: Linked Course ID to Promotion
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  name: pr_created
+                  remarks: Record created
+                  type: datetime
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  name: pr_modified
+                  remarks: Record modified
+                  type: datetime
+  - changeSet:
+      id: 20211124.STEP-4.add-fk_promotion_course
+      author: ibautrukevich@exadel.com
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - foreignKeyConstraintExists:
+                foreignKeyName: fk_promotion_course
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: cour_id
+            baseTableName: promotion
+            constraintName: fk_promotion_course
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: cour_id
+            referencedTableName: course
+            validate: true
