@@ -18,10 +18,10 @@ public class PromotionService {
   private final PromotionRepository promotionRepository;
 
   /**
-   * Applying promotions to courses. Apply promotions.
+   * Applying promotions to courses and return the cost.
    *
-   * @param quantityByCourse Map of number of courses
-   * @return total cast with promotions
+   * @param quantityByCourse Map of quantity by course
+   * @return total cost with promotions
    */
   public BigDecimal getTotalCostWithPromotions(Map<Course, Long> quantityByCourse) {
 
