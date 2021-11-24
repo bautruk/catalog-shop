@@ -1,9 +1,8 @@
 package com.instructure.shop.promotion;
 
-import com.instructure.shop.course.enums.CourseType;
+import com.instructure.shop.course.entity.Course;
 import com.instructure.shop.promotion.entity.Promotion;
 import lombok.AllArgsConstructor;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Service;
 
@@ -15,38 +14,23 @@ import java.util.Map;
 @AllArgsConstructor
 public class PromotionService {
 
+  private final PromotionAggregator promotionAggregator;
   private final PromotionRepository promotionRepository;
 
   /**
-   * Applying promotions to courses. Exclude free courses.
+   * Applying promotions to courses and return the cost.
    *
-   * @param typeNumberOfCoursesMap Map of number of courses by type
-   * @return total cast with promotions
+   * @param quantityByCourse Map of quantity by course
+   * @return total cost with promotions
    */
-  public Map<CourseType, Long> excludePromotionCourses(Map<CourseType, Long> typeNumberOfCoursesMap) {
+  public BigDecimal getTotalCostWithPromotions(Map<Course, Long> quantityByCourse) {
 
-    if (MapUtils.isEmpty(typeNumberOfCoursesMap))
-    {
-      return Map.of();
+    if (MapUtils.isEmpty(quantityByCourse)) {
+      return BigDecimal.ZERO;
     }
 
     List<Promotion> promotions = promotionRepository.findCurrentPromotions();
 
-    for (Promotion promotion : promotions) {
-      CourseType courseType = promotion.getCourseType();
-
-      if (!typeNumberOfCoursesMap.containsKey(courseType)) {
-        break;
-      }
-
-      int needToBuy = promotion.getNeedToBuy();
-      long numberOfCourses = typeNumberOfCoursesMap.get(courseType);
-      long countOfPossibleApplies = numberOfCourses / (needToBuy + 1);
-
-      if (numberOfCourses != 0L && countOfPossibleApplies >= 1) {
-        typeNumberOfCoursesMap.put(courseType, numberOfCourses - countOfPossibleApplies);
-      }
-    }
-    return typeNumberOfCoursesMap;
+    return promotionAggregator.getTheLowestCost(quantityByCourse, promotions);
   }
 }

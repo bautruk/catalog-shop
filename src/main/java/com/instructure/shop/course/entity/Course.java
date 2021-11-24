@@ -10,7 +10,14 @@ import java.math.BigDecimal;
 @Data
 public class Course
 {
+
+    /**
+     * Type of course
+     */
     private CourseType type;
 
+    /**
+     * Cost of course
+     */
     private BigDecimal cost;
 }

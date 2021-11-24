@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,23 +33,22 @@ public class CourseService {
     if (CollectionUtils.isEmpty(courseNames)) {
       return BigDecimal.ZERO;
     }
-    Map<CourseType, Long> typeNumberOfCoursesMap = courseNames.stream().map(CourseType::valueOf)
+    Map<CourseType, Long> quantityByCourseType = courseNames.stream().map(CourseType::valueOf)
         .collect(Collectors.groupingBy(c -> c, Collectors.counting()));
 
-    Map<CourseType, BigDecimal> courseTypeCostMap =
-        getCostOfCourses(typeNumberOfCoursesMap.keySet());
+    List<Course> courses = getCostOfCourses(quantityByCourseType.keySet());
 
-    typeNumberOfCoursesMap = promotionService.excludePromotionCourses(typeNumberOfCoursesMap);
+    Map<CourseType, Course> courseByCourseType = courses.stream()
+        .collect(Collectors.toMap(Course::getType, Function.identity()));
 
-    return typeNumberOfCoursesMap.entrySet().stream()
-        .map(e -> courseTypeCostMap.get(e.getKey()).multiply(BigDecimal.valueOf(e.getValue())))
-        .reduce(BigDecimal.ZERO, BigDecimal::add);
+    Map<Course, Long> quantityByCourse = quantityByCourseType.entrySet()
+        .stream()
+        .collect(Collectors.toMap(k -> courseByCourseType.get(k.getKey()), Entry::getValue));
+
+    return promotionService.getTotalCostWithPromotions(quantityByCourse);
   }
 
-  private Map<CourseType, BigDecimal> getCostOfCourses(Set<CourseType> courseTypes) {
-    List<Course> courses = courseRepository.findByTypeIn(courseTypes);
-    return courses
-        .stream()
-        .collect(Collectors.toMap(Course::getType, Course::getCost));
+  private List<Course> getCostOfCourses(Set<CourseType> courseTypes) {
+    return courseRepository.findByTypeIn(courseTypes);
   }
 }

@@ -31,6 +31,7 @@ class CourseTypeTest {
 
   public static Stream<Arguments> provideStringAndExpectedType() {
     return Stream.of(Arguments.of("MATH", CourseType.MATH),
-        Arguments.of("PHYSICS", CourseType.PHYSICS));
+        Arguments.of("PHYSICS", CourseType.PHYSICS),
+        Arguments.of("CHEMISTRY", CourseType.CHEMISTRY));
   }
 }
