@@ -7,10 +7,10 @@ databaseChangeLog:
         - onFail: MARK_RAN
         - not:
             - tableExists:
-                tableName: order
+                tableName: orders
       changes:
         - createTable:
-            tableName: order
+            tableName: orders
             columns:
               - column:
                   constraints:
@@ -39,16 +39,16 @@ databaseChangeLog:
                   remarks: Record modified
                   type: datetime
   - changeSet:
-      id: 20211124.STEP-4.create-order_course-table
+      id: 20211124.STEP-4.create-orders_course-table
       author: ibautrukevich@exadel.com
       preConditions:
         - onFail: MARK_RAN
         - not:
             - tableExists:
-                tableName: order_course
+                tableName: orders_course
       changes:
         - createTable:
-            tableName: order_course
+            tableName: orders_course
             columns:
               - column:
                   constraints:
@@ -70,18 +70,18 @@ databaseChangeLog:
                   remarks: Record created
                   type: datetime
   - changeSet:
-      id: 20211124.STEP-4.add-fk_order_course_course
+      id: 20211124.STEP-4.add-fk_orders_course_course
       author: ibautrukevich@exadel.com
       preConditions:
         - onFail: MARK_RAN
         - not:
             - foreignKeyConstraintExists:
-                foreignKeyName: fk_order_course_course
+                foreignKeyName: fk_orders_course_course
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: cour_id
-            baseTableName: order_course
-            constraintName: fk_order_course_course
+            baseTableName: orders_course
+            constraintName: fk_orders_course_course
             deferrable: false
             initiallyDeferred: false
             onDelete: NO ACTION
@@ -90,22 +90,22 @@ databaseChangeLog:
             referencedTableName: course
             validate: true
   - changeSet:
-      id: 20211124.STEP-4.add-fk_order_course_order
+      id: 20211124.STEP-4.add-fk_orders_course_order
       author: ibautrukevich@exadel.com
       preConditions:
         - onFail: MARK_RAN
         - not:
             - foreignKeyConstraintExists:
-                foreignKeyName: fk_order_course_order
+                foreignKeyName: fk_orders_course_order
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: or_id
-            baseTableName: order_course
-            constraintName: fk_order_course_order
+            baseTableName: orders_course
+            constraintName: fk_orders_course_order
             deferrable: false
             initiallyDeferred: false
             onDelete: NO ACTION
             onUpdate: NO ACTION
             referencedColumnNames: or_id
-            referencedTableName: order
+            referencedTableName: orders
             validate: true

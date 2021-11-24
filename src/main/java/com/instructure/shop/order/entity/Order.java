@@ -26,7 +26,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @Data
 @Entity
-@Table( name = "order" )
+@Table( name = "orders" )
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
@@ -45,7 +45,7 @@ public class Order {
   private BigDecimal totalCost;
 
   @ManyToMany
-  @JoinTable( name = "order_course",
+  @JoinTable( name = "orders_course",
       joinColumns = { @JoinColumn( name = "or_id" ) },
       inverseJoinColumns = { @JoinColumn( name = "cour_id" ) } )
   private List<Course> courses;
