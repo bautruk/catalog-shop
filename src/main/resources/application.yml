@@ -1,0 +1,14 @@
+app.version: 0.1
+
+server:
+  port: 8000
+
+spring:
+  datasource:
+    url:      jdbc:postgresql://localhost:5432/shop
+    username: shop-user
+    password: P@ssword
+
+  liquibase:
+    enabled: true
+    contexts: local

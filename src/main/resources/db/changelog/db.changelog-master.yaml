@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - include:
+      file: course/db.changelog.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: promotion/db.changelog.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: order/db.changelog.yaml
+      relativeToChangelogFile: true

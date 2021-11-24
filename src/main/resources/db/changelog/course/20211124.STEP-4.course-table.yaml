@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - logicalFilePath: no-path
+  - changeSet:
+      id: 20211124.STEP-4.create-course-table
+      author: ibautrukevich@exadel.com
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: course
+      changes:
+        - createTable:
+            tableName: course
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                  name: cour_id
+                  remarks: Primary Key
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: cour_type
+                  remarks: Type of course
+                  type: VARCHAR(50)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: cour_cost
+                  remarks: Cost of course
+                  type: DECIMAL(19, 4)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  name: cour_created
+                  remarks: Record created
+                  type: datetime
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  name: cour_modified
+                  remarks: Record modified
+                  type: datetime
