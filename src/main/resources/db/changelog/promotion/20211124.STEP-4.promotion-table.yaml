@@ -54,3 +54,23 @@ databaseChangeLog:
                   name: pr_modified
                   remarks: Record modified
                   type: datetime
+  - changeSet:
+      id: 20211124.STEP-4.add-fk_promotion_course
+      author: ibautrukevich@exadel.com
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - foreignKeyConstraintExists:
+                foreignKeyName: fk_promotion_course
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: cour_id
+            baseTableName: promotion
+            constraintName: fk_promotion_course
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: cour_id
+            referencedTableName: course
+            validate: true

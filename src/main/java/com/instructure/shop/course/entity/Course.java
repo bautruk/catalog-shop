@@ -1,6 +1,7 @@
 package com.instructure.shop.course.entity;
 
 import com.instructure.shop.course.enums.CourseType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -22,11 +24,13 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table( name = "course" )
 @NoArgsConstructor
+@AllArgsConstructor
 public class Course
 {
 
     @EqualsAndHashCode.Exclude
     @Id
+    @GeneratedValue
     @Column( name = "cour_id" )
     private UUID id;
     /**

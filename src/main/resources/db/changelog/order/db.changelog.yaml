@@ -1,5 +1,5 @@
 databaseChangeLog:
   - logicalFilePath: no-path
   - include:
-      file: 20211124.STEP-4.promotion-table.yaml
+      file: 20211124.STEP-4.order-table.yaml
       relativeToChangelogFile: true
