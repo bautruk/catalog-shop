@@ -33,19 +33,19 @@ public class CourseService {
     if (CollectionUtils.isEmpty(courseNames)) {
       return BigDecimal.ZERO;
     }
-    Map<CourseType, Long> typeNumberOfCoursesMap = courseNames.stream().map(CourseType::valueOf)
+    Map<CourseType, Long> quantityByCourseType = courseNames.stream().map(CourseType::valueOf)
         .collect(Collectors.groupingBy(c -> c, Collectors.counting()));
 
-    List<Course> courses = getCostOfCourses(typeNumberOfCoursesMap.keySet());
+    List<Course> courses = getCostOfCourses(quantityByCourseType.keySet());
 
-    Map<CourseType, Course> courseTypeCourseMap = courses.stream()
+    Map<CourseType, Course> courseByCourseType = courses.stream()
         .collect(Collectors.toMap(Course::getType, Function.identity()));
 
-    Map<Course, Long> numberOfCourses = typeNumberOfCoursesMap.entrySet()
+    Map<Course, Long> quantityByCourse = quantityByCourseType.entrySet()
         .stream()
-        .collect(Collectors.toMap(k -> courseTypeCourseMap.get(k.getKey()), Entry::getValue));
+        .collect(Collectors.toMap(k -> courseByCourseType.get(k.getKey()), Entry::getValue));
 
-    return promotionService.getTotalCostWithPromotions(numberOfCourses);
+    return promotionService.getTotalCostWithPromotions(quantityByCourse);
   }
 
   private List<Course> getCostOfCourses(Set<CourseType> courseTypes) {

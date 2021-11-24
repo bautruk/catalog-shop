@@ -20,7 +20,8 @@ public class TheSecondFreePromotionStrategy implements PromotionStrategy {
   public BigDecimal applyPromotionAndGetCost(Map<Course, Long> numberOfCourses,
       List<Promotion> promotions) {
 
-    Map<CourseType, Course> courseTypeCourseMap = numberOfCourses.keySet().stream()
+    Map<Course, Long> quantityByCourse = new HashMap<>(numberOfCourses);
+    Map<CourseType, Course> courseTypeCourseMap = quantityByCourse.keySet().stream()
         .collect(Collectors.toMap(Course::getType, Function.identity()));
 
     List<Promotion> appliedPromotions =
@@ -35,13 +36,13 @@ public class TheSecondFreePromotionStrategy implements PromotionStrategy {
       }
 
       int needToBuy = promotion.getNeedToBuy();
-      long number = numberOfCourses.get(course);
+      long number = quantityByCourse.get(course);
       long countOfPossibleApplies = number / (needToBuy + 1);
 
       if (number != 0L && countOfPossibleApplies >= 1) {
-        numberOfCourses.put(course, number - countOfPossibleApplies);
+        quantityByCourse.put(course, number - countOfPossibleApplies);
       }
     }
-    return getCost(numberOfCourses);
+    return getCost(quantityByCourse);
   }
 }

@@ -14,23 +14,23 @@ import java.util.Map;
 @AllArgsConstructor
 public class PromotionService {
 
-  private final PromotionFactory promotionFactory;
+  private final PromotionAggregator promotionAggregator;
   private final PromotionRepository promotionRepository;
 
   /**
    * Applying promotions to courses. Apply promotions.
    *
-   * @param numberOfCourses Map of number of courses
+   * @param quantityByCourse Map of number of courses
    * @return total cast with promotions
    */
-  public BigDecimal getTotalCostWithPromotions(Map<Course, Long> numberOfCourses) {
+  public BigDecimal getTotalCostWithPromotions(Map<Course, Long> quantityByCourse) {
 
-    if (MapUtils.isEmpty(numberOfCourses)) {
+    if (MapUtils.isEmpty(quantityByCourse)) {
       return BigDecimal.ZERO;
     }
 
     List<Promotion> promotions = promotionRepository.findCurrentPromotions();
 
-    return promotionFactory.getTheLowestCost(numberOfCourses, promotions);
+    return promotionAggregator.getTheLowestCost(quantityByCourse, promotions);
   }
 }

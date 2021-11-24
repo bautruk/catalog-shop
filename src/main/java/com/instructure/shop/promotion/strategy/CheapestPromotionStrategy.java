@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -21,7 +22,8 @@ public class CheapestPromotionStrategy implements PromotionStrategy {
   @Override
   public BigDecimal applyPromotionAndGetCost(Map<Course, Long> numberOfCourses,
       List<Promotion> promotions) {
-    Map<CourseType, Course> courseTypeCourseMap = numberOfCourses.keySet().stream()
+    Map<Course, Long> quantityByCourse = new HashMap<>(numberOfCourses);
+    Map<CourseType, Course> courseTypeCourseMap = quantityByCourse.keySet().stream()
         .collect(Collectors.toMap(Course::getType, Function.identity()));
 
     List<Promotion> appliedPromotions =
@@ -37,18 +39,18 @@ public class CheapestPromotionStrategy implements PromotionStrategy {
         continue;
       }
 
-      long number = numberOfCourses.get(course);
-      long linkedNumber = numberOfCourses.get(linkedCourse);
+      long number = quantityByCourse.get(course);
+      long linkedNumber = quantityByCourse.get(linkedCourse);
       long countOfPossibleApplies = Math.min(number, linkedNumber);
       Course cheapestCourse = Stream.of(course, linkedCourse)
           .min(Comparator.comparing(Course::getCost))
           .orElseThrow(NoSuchElementException::new);
 
       if (number != 0L && countOfPossibleApplies >= 1) {
-        numberOfCourses.put(cheapestCourse,
-            numberOfCourses.get(cheapestCourse) - countOfPossibleApplies);
+        quantityByCourse.put(cheapestCourse,
+            quantityByCourse.get(cheapestCourse) - countOfPossibleApplies);
       }
     }
-    return getCost(numberOfCourses);
+    return getCost(quantityByCourse);
   }
 }
