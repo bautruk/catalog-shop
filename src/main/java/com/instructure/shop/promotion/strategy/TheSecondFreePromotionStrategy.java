@@ -32,16 +32,14 @@ public class TheSecondFreePromotionStrategy implements PromotionStrategy {
       CourseType courseType = promotion.getCourseType();
       Course course = courseTypeCourseMap.get(courseType);
 
-      if (course == null) {
-        continue;
-      }
+      if (course != null) {
+        int needToBuy = promotion.getNeedToBuy();
+        long quantity = quantityByCourse.get(course);
+        long countOfPossibleApplies = quantity / (needToBuy + 1);
 
-      int needToBuy = promotion.getNeedToBuy();
-      long quantity = quantityByCourse.get(course);
-      long countOfPossibleApplies = quantity / (needToBuy + 1);
-
-      if (quantity != 0L && countOfPossibleApplies >= 1) {
-        quantityByCourse.put(course, quantity - countOfPossibleApplies);
+        if (quantity != 0L && countOfPossibleApplies >= 1) {
+          quantityByCourse.put(course, quantity - countOfPossibleApplies);
+        }
       }
     }
     return CourseCostCalculator.getCost(quantityByCourse);
